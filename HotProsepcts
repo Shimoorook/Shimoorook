@@ -9,60 +9,96 @@ import SwiftUI
 import UserNotifications
 import SamplePackage
 
-class User: ObservableObject {
-    @Published var name = "Taylor Swift"
-}
-
-struct EditView: View {
-    @EnvironmentObject var user: User
-    
-    var body: some View {
-        TextField("Name", text: $user.name)
-    }
-}
-
-struct DisplayView: View {
-    @EnvironmentObject var user: User
-    
-    var body: some View {
-        Text(user.name)
-    }
-}
-enum NetWorkError: Error {
-    case badURL, requestFailed, unknown
-}
-
-class DelayedUpdater: ObservableObject {
-    var value = 0 {
-        willSet {
-            objectWillChange.send()
-        }
-    }
-    
-    init() {
-        for i in 1...10 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i)) {
-                self.value += 1
-            }
-        }
-    }
-}
-
 struct ContentView: View {
-    let possibleNumbers = Array(1...60)
-    
-    var results: String {
-        let selected = possibleNumbers.random(7).sorted()
-        
-        let strings = selected.map(String.init)
-        
-        return strings.joined(separator: ", ")
-    }
+    var prospects = Prospects()
     
     var body: some View {
-        Text(results)
+        TabView {
+            ProspectsView(filter: .none)
+                .tabItem {
+                    Image(systemName: "person.3")
+                    Text("Everyone")
+                }
+            ProspectsView(filter: .contacted)
+                .tabItem {
+                    Image(systemName: "checkmark.circle")
+                    Text("Contacted")
+                }
+            ProspectsView(filter: .uncontacted)
+                .tabItem {
+                    Image(systemName: "questionmark.diamond")
+                    Text("Uncontacted")
+                }
+            MeView()
+                .tabItem {
+                    Image(systemName: "person.crop.square")
+                    Text("Me")
+                }
+        }
+        .environmentObject(prospects)
     }
 }
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+//class User: ObservableObject {
+//    @Published var name = "Taylor Swift"
+//}
+//
+//struct EditView: View {
+//    @EnvironmentObject var user: User
+//
+//    var body: some View {
+//        TextField("Name", text: $user.name)
+//    }
+//}
+//
+//struct DisplayView: View {
+//    @EnvironmentObject var user: User
+//
+//    var body: some View {
+//        Text(user.name)
+//    }
+//}
+//enum NetWorkError: Error {
+//    case badURL, requestFailed, unknown
+//}
+//
+//class DelayedUpdater: ObservableObject {
+//    var value = 0 {
+//        willSet {
+//            objectWillChange.send()
+//        }
+//    }
+//
+//    init() {
+//        for i in 1...10 {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i)) {
+//                self.value += 1
+//            }
+//        }
+//    }
+//}
+//
+//struct ContentView: View {
+//    let possibleNumbers = Array(1...60)
+//
+//    var results: String {
+//        let selected = possibleNumbers.random(7).sorted()
+//
+//        let strings = selected.map(String.init)
+//
+//        return strings.joined(separator: ", ")
+//    }
+//
+//    var body: some View {
+//        Text(results)
+//    }
+//}
 
 //struct ContentView: View {
 //    var body: some View {
@@ -222,9 +258,3 @@ struct ContentView: View {
 ////        .environmentObject(user)
 //    }
 //}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
