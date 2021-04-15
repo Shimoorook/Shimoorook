@@ -7,33 +7,115 @@
 
 import SwiftUI
 
-extension VerticalAlignment {
-    enum MidAccountAndName: AlignmentID {
-        static func defaultValue(in d: ViewDimensions) -> CGFloat {
-            d[.top]
-        }
-    }
-    static let midAccountAndName = VerticalAlignment(MidAccountAndName.self)
-}
+//extension VerticalAlignment {
+//    enum MidAccountAndName: AlignmentID {
+//        static func defaultValue(in d: ViewDimensions) -> CGFloat {
+//            d[.top]
+//        }
+//    }
+//    static let midAccountAndName = VerticalAlignment(MidAccountAndName.self)
+//}
 
 struct ContentView: View {
+    let colors: [Color] = [.red, .green, .blue, .orange, .pink, .purple, .yellow]
+    
     var body: some View {
-        HStack(alignment: .midAccountAndName) {
-            VStack {
-                Text("@twostraws")
-                    .alignmentGuide(.midAccountAndName) { d in d[VerticalAlignment.center]}
-                Image("example")
-                    .resizable()
-                    .frame(width: 64, height: 64)
-            }
-            
-            VStack {
-                Text("Full name:")
-                Text("Paul HUDSON")
-                    .alignmentGuide(.midAccountAndName) { d in d[VerticalAlignment.center]}
-                    .font(.largeTitle)
+        GeometryReader { fullView in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(0..<50) { index in
+                        GeometryReader { geo in
+                            Rectangle()
+                                .fill(self.colors[index % 7 ])
+                                .frame(height: 150)
+                                .rotation3DEffect(.degrees(-Double(geo.frame(in: .global).midX - fullView.size.width / 2) / 10), axis: (x: 0, y: 1, z: 0))
+                        }
+                        .frame(width: 150)
+                    }
+                }
+                .padding(.horizontal, (fullView.size.width - 150) / 2)
             }
         }
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
+//struct OuterView: View {
+//    var body: some View {
+//        VStack {
+//            Text("Top")
+//            InnerView()
+//                .background(Color.green)
+//            Text("Bottom")
+//        }
+//    }
+//}
+//
+//struct InnerView: View {
+//    var body: some View {
+//        HStack {
+//            Text("Left")
+//            GeometryReader { geo in
+//                Text("Center")
+//                    .background(Color.blue)
+//                    .onTapGesture {
+//                        print("Global center: \(geo.frame(in: .global).midX) x \(geo.frame(in: .global).midY)")
+//                        print("Custom center: \(geo.frame(in: .named("Custom")).midX) x \(geo.frame(in: .named("Custom")).midY)")
+//                        print("Local center: \(geo.frame(in: .local).midX) x \(geo.frame(in: .local).midY)")
+//                    }
+//            }
+//            .background(Color.orange)
+//            Text("Right")
+//        }
+//    }
+//}
+//
+//struct ContentView: View {
+//    var body: some View {
+//        OuterView()
+//            .background(Color.red)
+//            .coordinateSpace(name: "Custom")
+//    }
+//}
+
+//struct ContentView: View {
+//    var body: some View {
+//        VStack {
+//            GeometryReader { geo in
+//                Text("Hello, World!")
+//                    .frame(width: geo.size.width * 0.9)
+//                    .background(Color.red)
+//            }
+//            .background(Color.green)
+//
+//            Text("More Text")
+//                .background(Color.blue)
+//        }
+        
+//        Text("Hello World!")
+//            .background(Color.red)
+//            .offset(x: 100, y: 100)
+        
+//        Text("Hello World!")
+//            .position(x:100, y:100)
+//            .background(Color.red)
+        
+//        HStack(alignment: .midAccountAndName) {
+//            VStack {
+//                Text("@twostraws")
+//                    .alignmentGuide(.midAccountAndName) { d in d[VerticalAlignment.center]}
+//                Image("example")
+//                    .resizable()
+//                    .frame(width: 64, height: 64)
+//            }
+//
+//            VStack {
+//                Text("Full name:")
+//                Text("Paul HUDSON")
+//                    .alignmentGuide(.midAccountAndName) { d in d[VerticalAlignment.center]}
+//                    .font(.largeTitle)
+//            }
+//        }
         
 //        VStack(alignment: .leading) {
 //            ForEach(0..<10) { position in
@@ -83,8 +165,8 @@ struct ContentView: View {
 //        Text("Hello, world!")
 //            .padding()
 //            .background(Color.red)
-    }
-}
+//    }
+//}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
