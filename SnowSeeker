@@ -7,77 +7,34 @@
 
 import SwiftUI
 
-struct User: Identifiable {
-    var id = "Taylor Swift"
-}
-
-struct UserView: View {
-    var body: some View {
-        Group {
-            Text("Name: Paul")
-            Text("Country: England")
-            Text("Pets: Luna, Arya, and Toby")
-        }
-    }
-}
-
 struct ContentView: View {
-    @State private var selectedUser: User? = nil
-    @State private var layoutVertically = false
-    @Environment(\.horizontalSizeClass) var sizeClass
+    let resorts: [Resort] = Bundle.main.decode("resorts.json")
     
     var body: some View {
-        Group {
-            if sizeClass == .compact {
-                VStack(content: UserView.init)
-            } else {
-                HStack(content: UserView.init)
+        NavigationView {
+            List(resorts) { resort in
+                NavigationLink(destination: ResortView(resort: resort)) {
+                    Image(resort.country)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 25)
+                        .clipShape(RoundedRectangle(cornerRadius: 5.0))
+                        .overlay(RoundedRectangle(cornerRadius: 5.0)
+                                    .stroke(Color.black, lineWidth: 1.0)
+                        )
+                    
+                    VStack(alignment: .leading) {
+                        Text(resort.name)
+                            .font(.headline)
+                        Text("\(resort.runs) runs")
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
+            .navigationBarTitle("Resorts")
+            
+            WelcomeView()
         }
-        
-//        Group {
-//            if sizeClass == .compact {
-//                VStack {
-//                    UserView()
-//                }
-//            } else {
-//                HStack {
-//                    UserView()
-//                }
-//            }
-//        }
-        
-//        Group {
-//            if layoutVertically {
-//                VStack {
-//                    UserView()
-//                }
-//            } else {
-//                HStack {
-//                    UserView()
-//                }
-//            }
-//        }
-//        .onTapGesture {
-//            self.layoutVertically.toggle()
-//        }
-        
-//        Text("Hello World")
-//            .onTapGesture {
-//                self.selectedUser = User()
-//            }
-//            .alert(item: $selectedUser) { user in
-//                Alert(title: Text(user.id))
-//            }
-        
-//        NavigationView {
-//            NavigationLink(destination: Text("New secondary")) {
-//                Text("Hello World!")
-//            }
-//            .navigationBarTitle("Primary")
-//
-//            Text("Secondary")
-//        }
     }
 }
 
