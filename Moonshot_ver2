@@ -1,0 +1,52 @@
+//
+//  ContentView.swift
+//  Moonshot_ver2
+//
+//  Created by Shimoorook on 4/30/21.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
+    let missions: [Mission] = Bundle.main.decode("missions.json")
+    @State private var toggleBtn = true
+    
+    func stringName(from mission: Mission) -> String {
+        var result: String = ""
+        
+        for member in mission.crew {
+            result += (" " + member.name.capitalized)
+        }
+        return result
+    }
+
+    var body: some View {
+        NavigationView {
+            List(missions) { mission in
+                NavigationLink(destination: MissionView(mission: mission, astronauts: self.astronauts)) {
+                    Image(mission.image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 44, height: 44)
+
+                    VStack(alignment: .leading) {
+                        Text(mission.displayName)
+                            .font(.headline)
+                        Text(self.toggleBtn ? mission.formattedLaunchDate : stringName(from: mission))
+                    }
+                }
+            }
+            .navigationBarTitle("Moonshot")
+            .navigationBarItems(trailing: Button("Toggle") {
+                self.toggleBtn.toggle()
+            })
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
