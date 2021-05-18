@@ -1,0 +1,29 @@
+//
+//  SamplePopoverView.swift
+//  Sandbox
+//
+//  Created by Shimoorook on 5/18/21.
+//
+
+import SwiftUI
+
+struct SamplePopoverView: View {
+    @State private var showingPopover = false
+    
+    var body: some View {
+        Button("Show Menu") {
+            showingPopover.toggle()
+        }
+        .popover(isPresented: $showingPopover) {
+            Text("Your content here")
+                .font(.headline)
+                .padding()
+        }
+    }
+}
+
+struct SamplePopoverView_Previews: PreviewProvider {
+    static var previews: some View {
+        SamplePopoverView()
+    }
+}
