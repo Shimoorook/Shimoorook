@@ -8,9 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    let imageList = ["nssl0033", "nssl0034", "nssl0041", "nssl0042", "nssl0043", "nssl0045", "nssl0046", "nssl0049", "nssl0051", "nssl0091"]
+   
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView {
+            List {
+                ForEach(imageList, id: \.self) { item in
+                    NavigationLink(item, destination: Image(item).resizable().scaledToFit())
+                }
+            }
+            .navigationTitle("Storm Viewer")
+        }
     }
 }
 
