@@ -1,0 +1,99 @@
+//
+//  MatchedGeometryEffect.swift
+//  Sandbox
+//
+//  Created by Shimoorook on 7/22/21.
+//
+
+import SwiftUI
+
+struct MatchedGeometryEffect: View {
+    @Namespace private var animation
+    @State private var isZoomed = false
+    
+    var frame: CGFloat {
+        isZoomed ? 300 : 44
+    }
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            VStack {
+                HStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.blue)
+                        .frame(width: frame, height: frame)
+                        .padding(.top, isZoomed ? 20 : 0)
+                    
+                    if !isZoomed {
+                        Text("Taylor Swift - 1989")
+                            .matchedGeometryEffect(id: "AlbumTitle", in: animation)
+                            .font(.headline)
+                        
+                        Spacer()
+                    }
+                }
+                
+                if isZoomed {
+                    Text("Taylor Swift - 1989")
+                        .matchedGeometryEffect(id: "AlbumTitle", in: animation)
+                        .font(.headline)
+                        .padding(.vertical, 30)
+                    
+                    Spacer()
+                }
+            }
+            .onTapGesture {
+                withAnimation(.spring()) {
+                    isZoomed.toggle()
+                }
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .frame(height: isZoomed ? 440 : 100)
+            .background(Color(white: 0.9))
+            .foregroundColor(.black)
+        }
+    }
+}
+
+//struct MatchedGeometryEffect: View {
+//    @State private var isFlipped = false
+//    @Namespace private var animation
+//
+//    var body: some View {
+//        VStack {
+//            if isFlipped {
+//                Circle()
+//                    .fill(Color.red)
+//                    .frame(width: 44, height: 44)
+//                    .matchedGeometryEffect(id: "Shape", in: animation)
+//
+//                Text("Taylor Swift - 1989")
+//                    .font(.headline)
+//                    .matchedGeometryEffect(id: "AlbumTitle", in: animation)
+//            } else {
+//                Text("Taylor Swift - 1989")
+//                    .font(.headline)
+//                    .matchedGeometryEffect(id: "AlbumTitle", in: animation)
+//
+//                Circle()
+//                    .fill(Color.blue)
+//                    .frame(width: 44, height: 44)
+//                    .matchedGeometryEffect(id: "Shape", in: animation)
+//            }
+//        }
+//        .onTapGesture {
+//            withAnimation {
+//                isFlipped.toggle()
+//            }
+//        }
+//    }
+//}
+
+struct MatchedGeometryEffect_Previews: PreviewProvider {
+    static var previews: some View {
+        MatchedGeometryEffect()
+    }
+}
