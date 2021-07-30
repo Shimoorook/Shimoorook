@@ -1,0 +1,83 @@
+//
+//  ContentView.swift
+//  BB_SearchBar
+//
+//  Created by Shimoorook on 7/30/21.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    @State private var searchText: String = ""
+    @State private var searching = false
+    
+    var body: some View {
+        NavigationView {
+            VStack(alignment: .leading) {
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(Color.gray)
+                    
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                        
+                        TextField("Search...", text: $searchText) { isEditing in
+                            if isEditing != searching {
+                                withAnimation {
+                                    searching = true
+                                }
+                            }
+                        } onCommit: {
+                            withAnimation {
+                                searching = false
+                            }
+                        }
+                    }
+                    .foregroundColor(.white)
+                    .padding(.leading, 13)
+                }
+                .frame(height: 40)
+                .cornerRadius(13)
+                .padding()
+                
+                List {
+                    ForEach(myFruits.filter({ $0.hasPrefix(searchText) || searchText == ""}), id:\.self) { fruit in
+                        Text(fruit)
+                    }
+                }
+                .listStyle(GroupedListStyle())
+                .navigationTitle(searching ? "Searching" : "MyFruits")
+                .toolbar {
+                    if searching {
+                        Button("Cancel") {
+                            searchText = ""
+                            withAnimation {
+                                searching = false
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .preferredColorScheme(.dark)
+    }
+}
+
+let myFruits = [
+    "Apple 🍏",
+    "Banana 🍌",
+    "Blueberry 🫐",
+    "Strawberry 🍓",
+    "Avocado 🥑",
+    "Cherries 🍒",
+    "Mango 🥭",
+    "Watermelon 🍉",
+    "Grapes 🍇",
+    "Lemon 🍋"
+]
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
