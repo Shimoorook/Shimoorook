@@ -1,0 +1,47 @@
+//
+//  ContentView.swift
+//  ToolbarTutorial
+//
+//  Created by Shimoorook on 9/18/21.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Lorem Ipsum")
+                    
+                Spacer()
+            }
+            .padding(.all, 10)
+            .navigationTitle("SwiftUI Toolbar")
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    HStack(spacing: 50) {
+                        Image(systemName: "trash")
+                        
+                        Image(systemName: "info")
+                        
+                        Image(systemName: "paperclip")
+                        
+                        Text("Share")
+                        
+                        HStack {
+                            Image(systemName: "photo")
+                            
+                            Text("Photo")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
