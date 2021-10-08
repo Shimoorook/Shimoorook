@@ -1,0 +1,32 @@
+//
+//  ContentView.swift
+//  SearchBarTutorial
+//
+//  Created by Shimoorook on 10/7/21.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    @State private var searchString = ""
+    
+    let countries = ["Afghanistan", "Albania", "Algeria", "Angola", "Argentina", "Armenia", "Australia", "Austria"]
+    
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(searchString == "" ? countries : countries.filter { $0.contains(searchString)}, id: \.self) { country in
+                    Text(country)
+                }
+                .navigationTitle("Countries")
+            }
+            .searchable(text: $searchString)
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
